@@ -1,13 +1,18 @@
-# Sample Hardhat Project
+# new method for attack
+improve in the attack method referred in this article: 
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+## The smart contract that is attacked
 
-Try running some of the following tasks:
+![alt text](/images/image.png)
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
-```
+## The attack method used in the article (attack1)
+
+![alt text](/images/image-1.png)
+
+## My method (attack2)
+
+![alt text](/images/image-2.png)
+
+## Analysis of results (attack1 vs attack2)
+
+![alt text](/images/image-3.png)
