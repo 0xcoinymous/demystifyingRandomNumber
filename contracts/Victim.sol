@@ -6,12 +6,10 @@ import "hardhat/console.sol";
 
 contract Victim {
     uint256 private seed;
-
     constructor(uint _seed) {
         seed = _seed;
     }
-
-
+    
     function lottery() public payable {
         console.log((address(this)).balance);
         uint256 random = (block.timestamp + uint160(msg.sender) + seed) % 10;
@@ -25,7 +23,6 @@ contract Victim {
 }
 
 contract Middleman {
-
     receive() external payable{}
     
     function attack(address _victim) public payable {
