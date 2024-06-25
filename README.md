@@ -1,5 +1,7 @@
 # new method for attack
-improve in the attack method referred in this article: 
+improve in the attack method referred in this article: Demystifying Random Number in Ethereum Smart Contract Taxonomy, Vulnerability Identification, and Attack Detection 
+
+arXiv:2304.12645v1
 
 ## The smart contract that is attacked
 
