@@ -18,3 +18,5 @@ arXiv:2304.12645v1
 ## Analysis of results (attack1 vs attack2)
 
 ![alt text](/images/image-3.png)
+
+(1 – (97075 / 1345458)) * 100   =    92.78 % decrease in fee (gas usage)
