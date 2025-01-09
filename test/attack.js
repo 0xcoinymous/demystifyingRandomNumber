@@ -67,6 +67,11 @@ describe("attack", () => {
             await attack2()
             i++
         }
+        console.log(`
+            ---------------------------------
+                     number of runs: ${runs}     
+            ---------------------------------
+        `)
     }).timeout(1000000);
 
     // it("simulate attack1 (article's method) and attack2 (my method)", async () => {      

