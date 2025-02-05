@@ -47,7 +47,7 @@ contract Attacker {
                 emit AttackStarted(middlemanAddress, nonce);
                 break;
             }
-            nonce++;
+            ++nonce;
         }
     }
 
@@ -76,7 +76,9 @@ contract Attacker {
                 emit AttackStarted(middlemanAddress, nonce);
                 break;
             }
-            nonce++;
+            unchecked {
+                ++nonce;
+            }
         }
     }
 }
